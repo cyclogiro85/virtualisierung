@@ -4,12 +4,12 @@ dns:
   servers:
   - https+local://8.8.8.8/dns-query
 inbounds:
-- port: 61081
-  protocol: shadowsocks
+- port: 61079
+  protocol: vless
   settings:
-    password: "uuid"
-    method: chacha20-ietf-poly1305
-    ivcheck: true
+    decryption: none
+    clients:
+    - id: uuid
   streamSettings:
     network: ws
     wsSettings:
@@ -19,6 +19,7 @@ inbounds:
     destOverride:
     - http
     - tls
+    - quic
 outbounds:
 - protocol: freedom
   tag: direct
