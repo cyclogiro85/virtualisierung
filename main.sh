@@ -7,7 +7,8 @@
 FILES_PATH=${FILES_PATH:-./}
 
 # Gobal verbals
-
+green(){ echo "\033[32m\033[01m$1\033[0m";}
+yellow(){ echo "\033[33m\033[01m$1\033[0m";}
 # Xray current version
 CURRENT_VERSION=''
 
@@ -102,16 +103,36 @@ run_xray() {
     sed -i "s|uuid|${user_uuid}|g" /tmp/config.yaml
     ./web -c /tmp/config.yaml 2>&1 >/dev/null &
     echo
-    echo "shadowsocks+ws+tls配置如下，相关参数可复制到客户端"
+    green "当前已安装的Xray正式版本：$RELEASE_LATEST"
+    echo
+    UA_Browser="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36"
+    v4=$(curl -s4m6 api64.ipify.org -k)
+    v4l=`curl -sm6 --user-agent "${UA_Browser}" http://ip-api.com/json/$v4?lang=zh-CN -k | cut -f2 -d"," | cut -f4 -d '"'`
+    echo
+    green "当前检测到的IP：$v4    地区：$v4l"
+    echo
+    yellow "vless+ws+tls配置明文如下，相关参数可复制到客户端"
     echo "服务器地址：${REPL_SLUG}.${REPL_OWNER}.repl.co"
     echo "端口：443"
-    echo "密码：$user_uuid"
-    echo "加密方式：chacha20-ietf-poly1305"
+    echo "uuid：$user_uuid"
     echo "传输协议：ws"
     echo "hots：${REPL_SLUG}.${REPL_OWNER}.repl.co"
     echo "path路径：/?ed=2048"
     echo "tls：开启"
     echo
+replit_xray_vless="vless://${user_uuid}@${REPL_SLUG}.${REPL_OWNER}.repl.co:443?encryption=none&security=tls&type=ws&host=${REPL_SLUG}.${REPL_OWNER}.repl.co&path=/?ed=2048#replit_xray_vless"
+yellow "分享链接如下"    
+echo "${replit_xray_vless}"
+echo
+yellow "二维码如下"
+qrencode -t ansiutf8 ${replit_xray_vless}
+echo
+green "安装完毕"
+echo
+echo "了解Replit，关注甬哥侃侃侃
+视频教程：https://www.youtube.com/@ygkkk
+博客地址：https://ygkkk.blogspot.com"
+echo 
 tail -f
 }
 
