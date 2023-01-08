@@ -111,7 +111,7 @@ run_xray() {
     echo
     green "当前检测到的IP：$v4    地区：$v4l"
     echo
-    yellow "vless+ws+tls配置明文如下，相关参数可复制到客户端"
+    yellow "vmess+ws+tls配置明文如下，相关参数可复制到客户端"
     echo "服务器地址：${REPL_SLUG}.${REPL_OWNER}.repl.co"
     echo "端口：443"
     echo "uuid：$user_uuid"
@@ -120,19 +120,33 @@ run_xray() {
     echo "path路径：/?ed=2048"
     echo "tls：开启"
     echo
-replit_xray_vless="vless://${user_uuid}@${REPL_SLUG}.${REPL_OWNER}.repl.co:443?encryption=none&security=tls&type=ws&host=${REPL_SLUG}.${REPL_OWNER}.repl.co&path=/?ed=2048#replit_xray_vless"
+replit_xray_vmess="vmess://$(echo -n "\
+{\
+\"v\": \"2\",\
+\"ps\": \"replit_xray_vmess\",\
+\"add\": \"${REPL_SLUG}.${REPL_OWNER}.repl.co\",\
+\"port\": \"443\",\
+\"id\": \"$user_uuid\",\
+\"aid\": \"0\",\
+\"net\": \"ws\",\
+\"type\": \"none\",\
+\"host\": \"${REPL_SLUG}.${REPL_OWNER}.repl.co\",\
+\"path\": \"/?ed=2048\",\
+\"tls\": \"tls\"\
+}"\
+    | base64 -w 0)"   
 yellow "分享链接如下"    
-echo "${replit_xray_vless}"
+echo "${replit_xray_vmess}"
 echo
 yellow "二维码如下"
-qrencode -t ansiutf8 ${replit_xray_vless}
+qrencode -t ansiutf8 ${replit_xray_vmess}
 echo
 green "安装完毕"
 echo
 echo "了解Replit，关注甬哥侃侃侃
 视频教程：https://www.youtube.com/@ygkkk
 博客地址：https://ygkkk.blogspot.com"
-echo 
+echo
 tail -f
 }
 
