@@ -4,10 +4,9 @@ dns:
   servers:
   - https+local://8.8.8.8/dns-query
 inbounds:
-- port: 61079
-  protocol: vless
+- port: 61080
+  protocol: vmess
   settings:
-    decryption: none
     clients:
     - id: uuid
   streamSettings:
