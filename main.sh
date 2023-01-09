@@ -88,8 +88,8 @@ install_xray() {
     install -m 755 ${TMP_DIRECTORY}/xray ${FILES_PATH}/web
 }
 
-run_xray() {
-   re_uuid=$(curl -s $REPLIT_DB_URL/re_uuid)   
+run_xray() { 
+   re_uuid=$(curl -s $REPLIT_DB_URL/re_uuid)
     if [ "${re_uuid}" = "" ]; then
         NEW_uuid="$(cat /proc/sys/kernel/random/uuid)"
         curl -sXPOST $REPLIT_DB_URL/re_uuid="${NEW_uuid}" 
@@ -111,35 +111,21 @@ run_xray() {
     echo
     green "当前检测到的IP：$v4    地区：$v4l"
     echo
-    yellow "vmess+ws+tls配置明文如下，相关参数可复制到客户端"
+    yellow "trojan+ws+tls配置明文如下，相关参数可复制到客户端"
     echo "服务器地址：${REPL_SLUG}.${REPL_OWNER}.repl.co"
     echo "端口：443"
-    echo "uuid：$user_uuid"
+    echo "密码：$user_uuid"
     echo "传输协议：ws"
     echo "hots：${REPL_SLUG}.${REPL_OWNER}.repl.co"
     echo "path路径：/?ed=2048"
     echo "tls：开启"
-    echo
-replit_xray_vmess="vmess://$(echo -n "\
-{\
-\"v\": \"2\",\
-\"ps\": \"replit_xray_vmess\",\
-\"add\": \"${REPL_SLUG}.${REPL_OWNER}.repl.co\",\
-\"port\": \"443\",\
-\"id\": \"$user_uuid\",\
-\"aid\": \"0\",\
-\"net\": \"ws\",\
-\"type\": \"none\",\
-\"host\": \"${REPL_SLUG}.${REPL_OWNER}.repl.co\",\
-\"path\": \"/?ed=2048\",\
-\"tls\": \"tls\"\
-}"\
-    | base64 -w 0)"   
+    echo 
+replit_xray_trojan="trojan://${user_uuid}@${REPL_SLUG}.${REPL_OWNER}.repl.co:443?security=tls&type=ws&host=${REPL_SLUG}.${REPL_OWNER}.repl.co&path=/?ed=2048#replit_xray_trojan"
 yellow "分享链接如下"    
-echo "${replit_xray_vmess}"
+echo "${replit_xray_trojan}"
 echo
 yellow "二维码如下"
-qrencode -t ansiutf8 ${replit_xray_vmess}
+qrencode -t ansiutf8 ${replit_xray_trojan}
 echo
 green "安装完毕"
 echo
