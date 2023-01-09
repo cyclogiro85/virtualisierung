@@ -4,11 +4,11 @@ dns:
   servers:
   - https+local://8.8.8.8/dns-query
 inbounds:
-- port: 61080
-  protocol: vmess
+- port: 61082
+  protocol: trojan
   settings:
     clients:
-    - id: uuid
+    - password: "uuid"
   streamSettings:
     network: ws
     wsSettings:
